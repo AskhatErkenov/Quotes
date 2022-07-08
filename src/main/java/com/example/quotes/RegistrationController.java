@@ -3,6 +3,7 @@ package com.example.quotes;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,41 +22,41 @@ public class RegistrationController {
     private URL location;
 
     @FXML
-    private Button autorization;
-
-    @FXML
-    private TextField registrationLogin;
+    private TextField registrationSurname;
 
     @FXML
     private TextField registrationName;
 
     @FXML
-    private PasswordField registrationPassword;
-
-    @FXML
     private TextField registrationPatronymic;
 
     @FXML
-    private TextField registrationSurname;
+    private TextField registrationLogin;
+
+    @FXML
+    private PasswordField registrationPassword;
+
+    @FXML
+    private Button autorization;
 
     @FXML
     void initialize() {
-        autorization.setOnAction(actionEvent -> {autorization.getScene().getWindow().hide();
-            FXMLLoader load = new FXMLLoader();
-            load.setLocation(getClass().getResource("/com/example/quotes/avtorization.fxml"));
 
-            try {
-                load.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Parent parent = load.getRoot();
-            Stage st = new Stage();
-            st.setScene(new Scene(parent));
-            st.showAndWait();
+        autorization.setOnAction(actionEvent -> {
+            registrationNewUser();
         });
 
+    }
+
+    private void registrationNewUser() {
+        DBconnection dbConnect = new DBconnection();
+        String surname = registrationSurname.getText();
+        String name = registrationName.getText();
+        String patronymic = registrationPatronymic.getText();
+        String login = registrationLogin.getText();
+        String password = registrationPassword.getText();
+        User user = new User(surname, name, patronymic, login, password);
+        dbConnect.registrationUsers(user);
     }
 
 }
