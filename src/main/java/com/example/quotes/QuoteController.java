@@ -1,7 +1,9 @@
 package com.example.quotes;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
@@ -9,67 +11,61 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author amir
- */
+
 public class QuoteController implements Initializable {
 
+    @FXML
+    private TableView<Quote> table_quotes;
 
     @FXML
-    private TableView<User> table_users;
+    private TableColumn<Quote, Integer> col_id;
 
     @FXML
-    private TableColumn<User, Integer> col_id;
+    private TableColumn<Quote, String> col_quote;
 
     @FXML
-    private TableColumn<User, String> col_surname;
+    private TableColumn<Quote, String> col_teacher;
 
     @FXML
-    private TableColumn<User, String> col_name;
+    private TableColumn<Quote, String> col_subject;
+
+   @FXML
+    private TableColumn<Quote, Integer> col_date;
 
     @FXML
-    private TableColumn<User, String> col_patronymic;
-
-    @FXML
-    private TableColumn<User, String> col_login;
-
-    @FXML
-    private TableColumn<User, String> col_password;
+    private TableColumn<Quote, Integer> col_user;
 
     @FXML
     private TextField txt_id;
 
     @FXML
-    private TextField txt_login;
+    private TextField txt_quote;
 
     @FXML
-    private TextField txt_name;
+    private TextField txt_teacher;
 
     @FXML
-    private PasswordField txt_password;
+    private TextField txt_subject;
 
     @FXML
-    private TextField txt_patronymic;
+    private TextField txt_date;
 
     @FXML
-    private TextField txt_surname;
-
-
-    ObservableList<User> listM;
-    ObservableList<User> dataList;
-
+    private TextField txt_user;
 
 
     int index = -1;
@@ -81,18 +77,18 @@ public class QuoteController implements Initializable {
 
     public void Add_users (){
         conn = DBconnection.ConnDB();
-        String sql = "insert into "+ Constants.TABLE_USERS + " (" + Constants.COLUMNS_USERS_SURNAME + "," + Constants.COLUMNS_USERS_NAME + "," + Constants.COLUMNS_USERS_PATRONYMIC + "," + Constants.COLUMNS_USERS_LOGIN +"," + Constants.COLUMNS_USERS_PASSWORD_HASH +")values(?,?,?,?,?)";
+        String sql = "insert into "+ Constants.TABLE_TEACHER_QUOTES + " (" + Constants.COLUMNS_TEACHER_QUOTES_QUOTE + "," + Constants.COLUMNS_TEACHER_QUOTES_TEACHER + "," + Constants.COLUMNS_TEACHER_QUOTES_SUBJECT + "," + Constants.COLUMNS_TEACHER_QUOTES_DATE +"," + Constants.COLUMNS_TEACHER_QUOTES_USER +")values(?,?,?,?,?)";
         try {
             pst = conn.prepareStatement(sql);
-            pst.setString(1, txt_surname.getText());
-            pst.setString(2, txt_name.getText());
-            pst.setString(3, txt_patronymic.getText());
-            pst.setString(4, txt_login.getText());
-            pst.setString(5, txt_password.getText());
+            pst.setString(1, txt_quote.getText());
+            pst.setString(2, txt_teacher.getText());
+            pst.setString(3, txt_subject.getText());
+            pst.setString(4, txt_date.getText());
+            pst.setString(5, txt_user.getText());
             pst.execute();
 
             JOptionPane.showMessageDialog(null, "Добавлен");
-            UpdateTable();
+            QuoteTable();
             //   search_user();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -102,17 +98,17 @@ public class QuoteController implements Initializable {
 
     @FXML
     void getSelected (MouseEvent event){
-        index = table_users.getSelectionModel().getSelectedIndex();
+        index = table_quotes.getSelectionModel().getSelectedIndex();
         if (index <= -1){
 
             return;
         }
         txt_id.setText(col_id.getCellData(index).toString());
-        txt_surname.setText(col_surname.getCellData(index).toString());
-        txt_name.setText(col_name.getCellData(index).toString());
-        txt_patronymic.setText(col_patronymic.getCellData(index).toString());
-        txt_login.setText(col_login.getCellData(index).toString());
-        txt_password.setText(col_password.getCellData(index).toString());
+        txt_quote.setText(col_quote.getCellData(index).toString());
+        txt_teacher.setText(col_teacher.getCellData(index).toString());
+        txt_subject.setText(col_subject.getCellData(index).toString());
+        txt_date.setText(col_date.getCellData(index).toString());
+        txt_user.setText(col_user.getCellData(index).toString());
 
     }
 
@@ -120,17 +116,17 @@ public class QuoteController implements Initializable {
         try {
             conn = DBconnection.ConnDB();
             String value1 = txt_id.getText();
-            String value2 = txt_surname.getText();
-            String value3 = txt_name.getText();
-            String value4 = txt_patronymic.getText();
-            String value5 = txt_login.getText();
-            String value6 = txt_password.getText();
-            String sql = "update users set surname= '"+value2+"',name= '"+
-                    value3+"',patronymic= '"+value4+"',login= '"+value5+"',password_hash= '"+value6+"' where id='"+value1+"' ";
+            String value2 = txt_quote.getText();
+            String value3 = txt_teacher.getText();
+            String value4 = txt_subject.getText();
+            String value5 = txt_date.getText();
+            String value6 = txt_user.getText();
+            String sql = "update teaxher_quotes set quote= '"+value2+"',teacher= '"+
+                    value3+"',subject= '"+value4+"',date= '"+value5+"',id_user= '"+value6+"' where id='"+value1+"' ";
             pst= conn.prepareStatement(sql);
             pst.execute();
             JOptionPane.showMessageDialog(null, "Изменен");
-            UpdateTable();
+            QuoteTable();
             //   search_user();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -140,13 +136,13 @@ public class QuoteController implements Initializable {
 
     public void Delete(){
         conn = DBconnection.ConnDB();
-        String sql = "delete from " + Constants.TABLE_USERS + " where " + Constants.COLUMNS_USERS_ID + " = ?";
+        String sql = "delete from " + Constants.TABLE_TEACHER_QUOTES + " where " + Constants.COLUMNS_TEACHER_QUOTES_ID + " = ?";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txt_id.getText());
             pst.execute();
             JOptionPane.showMessageDialog(null, "Удален");
-            UpdateTable();
+            QuoteTable();
             //  search_user();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -155,42 +151,35 @@ public class QuoteController implements Initializable {
     }
 
 
-    public void UpdateTable(){
+    public void QuoteTable(){
         Connection conn = DBconnection.ConnDB();
-        ObservableList<User> list = FXCollections.observableArrayList();
+        ObservableList<Quote> list = FXCollections.observableArrayList();
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from " + Constants.TABLE_USERS);
+            PreparedStatement ps = conn.prepareStatement("select * from " + Constants.TABLE_TEACHER_QUOTES);
             ResultSet rs = ps.executeQuery();
             {
                 while (rs.next()) {
-                    list.add(new User(Integer.parseInt(rs.getString(Constants.COLUMNS_USERS_ID)),
-                            rs.getString(Constants.COLUMNS_USERS_SURNAME),
-                            rs.getString(Constants.COLUMNS_USERS_NAME),
-                            rs.getString(Constants.COLUMNS_USERS_PATRONYMIC),
-                            rs.getString(Constants.COLUMNS_USERS_LOGIN),
-                            rs.getString(Constants.COLUMNS_USERS_PASSWORD_HASH)));
+                    list.add(new Quote(Integer.parseInt(rs.getString(Constants.COLUMNS_TEACHER_QUOTES_ID)),
+                            rs.getString(Constants.COLUMNS_TEACHER_QUOTES_QUOTE),
+                            rs.getString(Constants.COLUMNS_TEACHER_QUOTES_TEACHER),
+                            rs.getString(Constants.COLUMNS_TEACHER_QUOTES_SUBJECT),
+                            Integer.parseInt(rs.getString(Constants.COLUMNS_TEACHER_QUOTES_DATE)),
+                            Integer.parseInt(rs.getString(Constants.COLUMNS_TEACHER_QUOTES_USER))));
                 }
             }
-            table_users.setItems(list);
-            col_id.setCellValueFactory(new PropertyValueFactory<User,Integer>("id"));
-            col_surname.setCellValueFactory(new PropertyValueFactory<User,String>("surname"));
-            col_name.setCellValueFactory(new PropertyValueFactory<User,String>("name"));
-            col_patronymic.setCellValueFactory(new PropertyValueFactory<User,String>("patronymic"));
-            col_login.setCellValueFactory(new PropertyValueFactory<User,String>("login"));
-            col_password.setCellValueFactory(new PropertyValueFactory<User,String>("password"));
+            table_quotes.setItems(list);
+            col_id.setCellValueFactory(new PropertyValueFactory<Quote,Integer>("id"));
+            col_quote.setCellValueFactory(new PropertyValueFactory<Quote,String>("quote"));
+            col_teacher.setCellValueFactory(new PropertyValueFactory<Quote,String>("teacher"));
+            col_subject.setCellValueFactory(new PropertyValueFactory<Quote,String>("subject"));
+            col_date.setCellValueFactory(new PropertyValueFactory<Quote,Integer>("date"));
+            col_user.setCellValueFactory(new PropertyValueFactory<Quote,Integer>("user"));
         } catch (Exception e) {
         }
-
-
-
-        //listM = mysqlconnect.getDatausers();
-        //table_users.setItems(listM);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        UpdateTable();
-        //search_user();
-        // Code Source in description
+        QuoteTable();
     }
 }

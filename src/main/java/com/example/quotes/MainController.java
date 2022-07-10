@@ -35,35 +35,31 @@ public class MainController {
     @FXML
     private Button registration;
 
+    public static User user = new User();
+
     @FXML
-    void initialize() {
+    void initialize() throws SQLException{
 
         authorization.setOnAction(actionEvent -> {
             String log = login.getText().trim();
             String pass = password.getText().trim();
-            if (!log.equals("") && !pass.equals(""))
-                logUser(log, pass);
+            if (!log.equals("") && !pass.equals("")) {
+                try {
+                    logUser(log, pass);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
             else
                 System.out.println("Вы не заполнили логин и пароль");
         });
 
         registration.setOnAction(actionEvent -> {
-            registration.getScene().getWindow().hide();
-            FXMLLoader load = new FXMLLoader();
-            load.setLocation(getClass().getResource("/com/example/quotes/quote.fxml"));
-            try {
-                load.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Parent parent = load.getRoot();
-            Stage st = new Stage();
-            st.setScene(new Scene(parent));
-            st.showAndWait();
+            openNewScene("/com/example/quotes/registration.fxml");
         });
     }
 
-    private void logUser(String log, String pass) {
+    private void logUser(String log, String pass) throws SQLException {
         DBconnection dbConn = new DBconnection();
         User user = new User();
         user.setLogin(log);
@@ -73,14 +69,38 @@ public class MainController {
         int count = 0;
         try {
             while (resultSet.next()) {
+                this.user = user;
+                user.setId(resultSet.getInt(1));
+                user.setSurname(resultSet.getString(2));
+                user.setName(resultSet.getString(3));
+                user.setPatronymic(resultSet.getString(4));
+                user.setLogin(resultSet.getString(5));
+                user.setPassword(resultSet.getString(6));
                 count++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         if (count >= 1) {
-            System.out.println("Получилось");
+
+            openNewScene("/com/example/quotes/quote.fxml");
         }
+    }
+
+    public void openNewScene(String window) {
+
+        registration.getScene().getWindow().hide();
+        FXMLLoader load = new FXMLLoader();
+        load.setLocation(getClass().getResource(window));
+        try {
+            load.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Parent parent = load.getRoot();
+        Stage st = new Stage();
+        st.setScene(new Scene(parent));
+        st.showAndWait();
     }
 
 }

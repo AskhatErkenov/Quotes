@@ -23,11 +23,6 @@ public class DBconnection{
             return null;
         }
     }
-    /*public static Connection getConnectionDB() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connect = DriverManager.getConnection("jdbc:mysql://std-mysql:3306/std_1950_quote","std_1950_quote","FitMosPol8909");
-        return connect;
-    }*/
 
     public void registrationUsers(String surname, String name, String patronymic, String login, String password) {
         String insert = "INSERT INTO " + Constants.TABLE_USERS + "(" + Constants.COLUMNS_USERS_SURNAME + "," + Constants.COLUMNS_USERS_NAME + "," +
