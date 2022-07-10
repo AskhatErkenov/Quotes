@@ -43,20 +43,10 @@ public class RegistrationController {
     void initialize() {
 
         autorization.setOnAction(actionEvent -> {
-            registrationNewUser();
+            DBconnection dbConnect = new DBconnection();
+            dbConnect.registrationUsers(registrationSurname.getText(), registrationName.getText(), registrationPatronymic.getText(), registrationLogin.getText(), registrationPassword.getText());
         });
 
-    }
-
-    private void registrationNewUser() {
-        DBconnection dbConnect = new DBconnection();
-        String surname = registrationSurname.getText();
-        String name = registrationName.getText();
-        String patronymic = registrationPatronymic.getText();
-        String login = registrationLogin.getText();
-        String password = registrationPassword.getText();
-        User user = new User(surname, name, patronymic, login, password);
-        dbConnect.registrationUsers(user);
     }
 
 }

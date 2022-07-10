@@ -10,6 +10,8 @@ module com.example.quotes {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
+    requires jdk.scripting.nashorn;
+    requires java.desktop;
 
     opens com.example.quotes to javafx.fxml;
     exports com.example.quotes;

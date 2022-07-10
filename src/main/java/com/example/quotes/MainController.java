@@ -2,7 +2,10 @@ package com.example.quotes;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,9 +37,20 @@ public class MainController {
 
     @FXML
     void initialize() {
-        registration.setOnAction(actionEvent -> {registration.getScene().getWindow().hide();
+
+        authorization.setOnAction(actionEvent -> {
+            String log = login.getText().trim();
+            String pass = password.getText().trim();
+            if (!log.equals("") && !pass.equals(""))
+                logUser(log, pass);
+            else
+                System.out.println("Вы не заполнили логин и пароль");
+        });
+
+        registration.setOnAction(actionEvent -> {
+            registration.getScene().getWindow().hide();
             FXMLLoader load = new FXMLLoader();
-            load.setLocation(getClass().getResource("/com/example/quotes/registration.fxml"));
+            load.setLocation(getClass().getResource("/com/example/quotes/quote.fxml"));
             try {
                 load.load();
             } catch (IOException e) {
@@ -47,6 +61,26 @@ public class MainController {
             st.setScene(new Scene(parent));
             st.showAndWait();
         });
+    }
+
+    private void logUser(String log, String pass) {
+        DBconnection dbConn = new DBconnection();
+        User user = new User();
+        user.setLogin(log);
+        user.setPassword(pass);
+        dbConn.getUser(user);
+        ResultSet resultSet = dbConn.getUser(user);
+        int count = 0;
+        try {
+            while (resultSet.next()) {
+                count++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (count >= 1) {
+            System.out.println("Получилось");
+        }
     }
 
 }

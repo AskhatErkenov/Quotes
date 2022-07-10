@@ -1,18 +1,32 @@
 package com.example.quotes;
 
 public class User {
+    private Integer id;
     private String surname;
     private String name;
     private String patronymic;
     private String login;
     private String password;
 
-    public User(String surname, String name, String patronymic, String login, String password) {
+    public User(Integer id, String surname, String name, String patronymic, String login, String password) {
+        this.id = id;
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
         this.login = login;
         this.password = password;
+    }
+
+    public User() {
+
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSurname() {
