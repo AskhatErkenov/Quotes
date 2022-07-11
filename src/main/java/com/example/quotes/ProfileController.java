@@ -68,10 +68,6 @@ public class ProfileController {
 
     @FXML
     private TextField txt_teacher;
-
-    @FXML
-    private TextField txt_user;
-
     @FXML
     private Button editDataButton;
 
@@ -81,30 +77,22 @@ public class ProfileController {
     @FXML
     private Button allQuotesButton;
 
-    @FXML
-    private Label summQuotes;
-
     int index = -1;
     Connection conn =null;
-    ResultSet rs = null;
     PreparedStatement pst = null;
 
     @FXML
     void Add(ActionEvent event) {
         conn = DBconnection.ConnDB();
-        String sql = "insert into "+ Constants.TABLE_TEACHER_QUOTES + " (" + Constants.COLUMNS_TEACHER_QUOTES_QUOTE + "," + Constants.COLUMNS_TEACHER_QUOTES_TEACHER + "," + Constants.COLUMNS_TEACHER_QUOTES_SUBJECT + "," + Constants.COLUMNS_TEACHER_QUOTES_DATE +"," + Constants.COLUMNS_TEACHER_QUOTES_USER +")values(?,?,?,?,?)";
+        String sql = "insert into "+ Constants.TABLE_TEACHER_QUOTES + " (" + Constants.COLUMNS_TEACHER_QUOTES_QUOTE + "," + Constants.COLUMNS_TEACHER_QUOTES_TEACHER + "," + Constants.COLUMNS_TEACHER_QUOTES_SUBJECT + "," + Constants.COLUMNS_TEACHER_QUOTES_DATE +"," + Constants.COLUMNS_TEACHER_QUOTES_USER +")values(?,?,?,?,"+user.getId()+")";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txt_quote.getText());
             pst.setString(2, txt_teacher.getText());
             pst.setString(3, txt_subject.getText());
             pst.setString(4, txt_date.getText());
-            pst.setString(5, txt_user.getText());
             pst.execute();
-
-            JOptionPane.showMessageDialog(null, "Добавлен");
             QuoteUserTable();
-            //   search_user();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -134,12 +122,11 @@ public class ProfileController {
     @FXML
     void Delete(ActionEvent event) {
         conn = DBconnection.ConnDB();
-        String sql = "delete from " + Constants.TABLE_TEACHER_QUOTES + " where " + Constants.COLUMNS_TEACHER_QUOTES_ID + " = ?";
+        String sql = "delete from " + Constants.TABLE_TEACHER_QUOTES + " where " + Constants.COLUMNS_TEACHER_QUOTES_ID + " = ? AND id_user = " + user.getId();;
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txt_id.getText());
             pst.execute();
-            JOptionPane.showMessageDialog(null, "Удален");
             QuoteUserTable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -155,12 +142,10 @@ public class ProfileController {
             String value3 = txt_teacher.getText();
             String value4 = txt_subject.getText();
             String value5 = txt_date.getText();
-            String value6 = txt_user.getText();
             String sql = "update teacher_quotes set quote= '"+value2+"',teacher= '"+
-                    value3+"',subject= '"+value4+"',date= '"+value5+"',id_user= '"+value6+"' where id='"+value1+"' ";
+                    value3+"',subject= '"+value4+"',date= '"+value5+"' where id='"+value1+"' ";
             pst= conn.prepareStatement(sql);
             pst.execute();
-            JOptionPane.showMessageDialog(null, "Изменен");
             QuoteUserTable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -179,7 +164,6 @@ public class ProfileController {
         txt_teacher.setText(col_teacher.getCellData(index).toString());
         txt_subject.setText(col_subject.getCellData(index).toString());
         txt_date.setText(col_date.getCellData(index).toString());
-        txt_user.setText(col_user.getCellData(index).toString());
     }
 
     public void QuoteUserTable(){
@@ -208,34 +192,9 @@ public class ProfileController {
         } catch (Exception e) {
         }
     }
-
-    public void SummQuates(){
-        Connection conn = DBconnection.ConnDB();
-        ObservableList<Quote> list = FXCollections.observableArrayList();
-        try {
-            PreparedStatement ps = conn.prepareStatement("select count(id_user) from teacher_quotes where id_user = " + user.getId());
-            ResultSet rs = ps.executeQuery();
-            {
-                while (rs.next()) {
-                    rs.getInt("count(id_user)");
-                }
-            }
-
-
-
-            col_quote.setCellValueFactory(new PropertyValueFactory<Quote,String>("quote"));
-            col_teacher.setCellValueFactory(new PropertyValueFactory<Quote,String>("teacher"));
-            col_subject.setCellValueFactory(new PropertyValueFactory<Quote,String>("subject"));
-            col_date.setCellValueFactory(new PropertyValueFactory<Quote,String>("date"));
-            col_user.setCellValueFactory(new PropertyValueFactory<Quote,Integer>("user"));
-        } catch (Exception e) {
-        }
-    }
-
     @FXML
     void initialize() {
         QuoteUserTable();
-        SummQuates();
     }
 
 }

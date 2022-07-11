@@ -101,7 +101,6 @@ public class EditRegistrationController implements Initializable {
     int index = -1;
 
     Connection conn =null;
-    ResultSet rs = null;
     PreparedStatement pst = null;
 
     @FXML
@@ -133,9 +132,7 @@ public class EditRegistrationController implements Initializable {
                     value3+"',patronymic= '"+value4+"',login= '"+value5+"',password_hash= '"+value6+"' where id='"+value1+"' ";
             pst= conn.prepareStatement(sql);
             pst.execute();
-            JOptionPane.showMessageDialog(null, "Изменен");
             UpdateTable();
-            //   search_user();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }

@@ -47,7 +47,6 @@
             <TextField fx:id="txt_teacher" layoutX="54.0" layoutY="150.0" prefHeight="30.0" prefWidth="180.0" promptText="Преподаватель" />
             <TextField fx:id="txt_subject" layoutX="54.0" layoutY="200.0" prefHeight="30.0" prefWidth="180.0" promptText="Предмет" />
             <TextField fx:id="txt_date" layoutX="54.0" layoutY="250.0" prefHeight="30.0" prefWidth="180.0" promptText="Дата" />
-            <TextField fx:id="txt_user" layoutX="54.0" layoutY="300.0" prefHeight="30.0" prefWidth="180.0" promptText="id Пользователя" />
             <Button layoutX="62.0" layoutY="345.0" onAction="#Add" prefHeight="43.0" prefWidth="164.0" style="-fx-background-color: #4a5a1c;" text="Добавить" textFill="WHITE">
                <font>
                   <Font size="20.0" />

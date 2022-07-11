@@ -45,8 +45,10 @@ public class MainController {
     private Button guestButton;
 
     @FXML
-    void Guest(ActionEvent event) {
-
+    void Guest(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("guest.fxml"));
+        Stage stage = (Stage) guestButton.getScene().getWindow();
+        stage.setScene(new Scene(root));
     }
 
     public static User user = new User();
