@@ -1,54 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="869.0" style="-fx-background-color: #4b8009;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.quotes.QuoteController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.2" prefWidth="991.2" style="-fx-background-color: #91cc07;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.quotes.QuoteController">
     <children>
-      <AnchorPane layoutY="57.0" prefHeight="347.0" prefWidth="700.0" style="-fx-background-color: white;">
+      <AnchorPane prefHeight="526.0" prefWidth="260.0" style="-fx-background-color: #4b8009;">
          <children>
-              <AnchorPane layoutY="1.0" prefHeight="314.0" prefWidth="252.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="1.0">
-                  <children>
-                      <Button layoutX="14.0" layoutY="270.0" mnemonicParsing="false" onAction="#Add" prefHeight="17.0" prefWidth="75.0" style="-fx-background-color: #4a5a1c;" text="Добавить" textFill="WHITE" />
-                      <Button layoutX="97.0" layoutY="269.0" mnemonicParsing="false" onAction="#Edit" prefHeight="26.0" prefWidth="75.0" style="-fx-background-color: #4a5a1c;" text="Изменить" textFill="WHITE" />
-                      <Button layoutX="181.0" layoutY="269.0" mnemonicParsing="false" onAction="#Delete" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: #4a5a1c;" text="Удалить" textFill="WHITE" />
-                      <TextField fx:id="txt_quote" layoutX="24.0" layoutY="60.0" prefHeight="30.0" prefWidth="180.0" promptText="Цитата" />
-                      <TextField fx:id="txt_teacher" layoutX="24.0" layoutY="100.0" prefHeight="30.0" prefWidth="180.0" promptText="Преподаватель" />
-                      <TextField fx:id="txt_subject" layoutX="24.0" layoutY="140.0" prefHeight="30.0" prefWidth="180.0" promptText="Предмет" />
-                      <TextField fx:id="txt_id" layoutX="24.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" promptText="ID" />
-                  <TextField fx:id="txt_user" layoutX="24.0" layoutY="220.0" prefHeight="30.0" prefWidth="180.0" promptText="Пользователь" />
-                  <TextField fx:id="txt_date" layoutX="24.0" layoutY="180.0" prefHeight="30.0" prefWidth="180.0" promptText="Дата" />
-                  </children>
-              </AnchorPane>
-              <TableView fx:id="table_quotes" layoutX="253.0" onMouseClicked="#getSelected" prefHeight="347.0" prefWidth="615.0">
-                  <columns>
-                      <TableColumn fx:id="col_id" prefWidth="49.5999755859375" text="ID" />
-                      <TableColumn fx:id="col_quote" prefWidth="101.60003662109375" text="Цитата" />
-                      <TableColumn fx:id="col_teacher" prefWidth="139.20004272460938" text="Преподаватель" />
-                      <TableColumn fx:id="col_subject" prefWidth="135.199951171875" text="Предмет" />
-                  <TableColumn fx:id="col_date" prefWidth="46.4000244140625" text="Дата" />
-                  <TableColumn fx:id="col_user" prefWidth="130.4000244140625" text="Пользователь" />
-                  </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-              </TableView>
-            <Button fx:id="profileButton" layoutX="102.0" layoutY="307.0" mnemonicParsing="false" style="-fx-background-color: #4a5a1c;" text="Профиль" textFill="WHITE" />
+            <ImageView fitHeight="218.0" fitWidth="260.0" layoutX="21.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../java/com/example/quotes/resurses/профиль.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="editDataButton" layoutY="407.0" onAction="#EditData" prefHeight="60.0" prefWidth="260.0" style="-fx-background-color: #4a5a1c;" text="Редактировать данные" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="myQuoteButton" cache="true" layoutY="347.0" onAction="#MyQuote" prefHeight="60.0" prefWidth="260.0" style="-fx-background-color: #4a5a1c;" text="Мои цитаты" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button disable="true" layoutY="287.0" prefHeight="60.0" prefWidth="260.0" style="-fx-background-color: #4a5a1c;" text="Все цитаты" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="exitButton" layoutY="467.0" onAction="#Exit" prefHeight="60.0" prefWidth="260.0" style="-fx-background-color: #4a5a1c;" text="Выход" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
-      <Label layoutX="377.0" layoutY="6.0" prefHeight="50.0" prefWidth="115.0" text="Цитаты" textFill="WHITE">
-         <font>
-            <Font size="33.0" />
-         </font>
-      </Label>
-      <Button fx:id="exitButton" layoutX="772.0" layoutY="11.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: #4a5a1c;" text="Выход" textFill="WHITE">
-         <font>
-            <Font size="18.0" />
-         </font></Button>
+        <AnchorPane layoutX="260.0" prefHeight="527.0" prefWidth="288.0" style="-fx-background-color: #91cc07;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <TextField fx:id="txt_id" layoutX="54.0" layoutY="50.0" prefHeight="30.0" prefWidth="180.0" promptText="id" />
+                <TextField fx:id="txt_quote" layoutX="54.0" layoutY="100.0" prefHeight="30.0" prefWidth="180.0" promptText="Цитата" />
+                <TextField fx:id="txt_teacher" layoutX="54.0" layoutY="150.0" prefHeight="30.0" prefWidth="180.0" promptText="Преподаватель" />
+                <TextField fx:id="txt_subject" layoutX="54.0" layoutY="200.0" prefHeight="30.0" prefWidth="180.0" promptText="Предмет" />
+            <TextField fx:id="txt_date" layoutX="54.0" layoutY="250.0" prefHeight="30.0" prefWidth="180.0" promptText="Дата" />
+            <TextField fx:id="txt_user" layoutX="54.0" layoutY="300.0" prefHeight="30.0" prefWidth="180.0" promptText="Пользователь" />
+                <Button layoutX="62.0" layoutY="345.0" mnemonicParsing="false" onAction="#Add" prefHeight="43.0" prefWidth="164.0" style="-fx-background-color: #4a5a1c;" text="Добавить" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+                <Button layoutX="62.0" layoutY="399.0" mnemonicParsing="false" onAction="#Edit" prefHeight="43.0" prefWidth="164.0" style="-fx-background-color: #4a5a1c;" text="Изменить" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+                <Button layoutX="63.0" layoutY="453.0" mnemonicParsing="false" onAction="#Delete" prefHeight="43.0" prefWidth="164.0" style="-fx-background-color: #4a5a1c;" text="Удалить" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            </children>
+        </AnchorPane>
+        <TableView fx:id="table_quotes" layoutX="548.0" layoutY="1.0" onMouseClicked="#getSelected" prefHeight="527.0" prefWidth="443.0">
+            <columns>
+                <TableColumn fx:id="col_id" prefWidth="49.5999755859375" text="ID" />
+                <TableColumn fx:id="col_quote" prefWidth="101.60003662109375" text="Цитата" />
+                <TableColumn fx:id="col_teacher" prefWidth="139.20004272460938" text="Преподаватель" />
+                <TableColumn fx:id="col_subject" prefWidth="135.199951171875" text="Предмет" />
+            <TableColumn fx:id="col_date" prefWidth="46.4000244140625" text="Дата" />
+            <TableColumn fx:id="col_user" prefWidth="130.4000244140625" text="Пользователь" />
+            </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+        </TableView>
     </children>
 </AnchorPane>

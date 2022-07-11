@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -39,6 +40,14 @@ public class MainController {
 
     @FXML
     private Button registration;
+
+    @FXML
+    private Button guestButton;
+
+    @FXML
+    void Guest(ActionEvent event) {
+
+    }
 
     public static User user = new User();
 
@@ -91,7 +100,7 @@ public class MainController {
             e.printStackTrace();
         }
         if (count >= 1) {
-            Parent root = FXMLLoader.load(getClass().getResource("quote.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("profile.fxml"));
             Stage stage = (Stage) authorization.getScene().getWindow();
             stage.setScene(new Scene(root));
         }

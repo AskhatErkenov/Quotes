@@ -2,17 +2,20 @@ package com.example.quotes;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import jdk.nashorn.internal.objects.annotations.Where;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -64,6 +67,35 @@ public class EditRegistrationController implements Initializable {
     @FXML
     private TextField txt_surname;
 
+    @FXML
+    private Button myQuoteButton;
+
+    @FXML
+    private Button allQuotesButton;
+
+    @FXML
+    private Button exitButton;
+
+    @FXML
+    void MyQuote(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("profile.fxml"));
+        Stage stage = (Stage) myQuoteButton.getScene().getWindow();
+        stage.setScene(new Scene(root));
+    }
+
+    @FXML
+    void AllQuotes(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("quote.fxml"));
+        Stage stage = (Stage) allQuotesButton.getScene().getWindow();
+        stage.setScene(new Scene(root));
+    }
+
+    @FXML
+    void Exit(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("autorization.fxml"));
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        stage.setScene(new Scene(root));
+    }
 
 
     int index = -1;
@@ -71,28 +103,6 @@ public class EditRegistrationController implements Initializable {
     Connection conn =null;
     ResultSet rs = null;
     PreparedStatement pst = null;
-
-
-    public void Add_users (){
-        conn = DBconnection.ConnDB();
-        String sql = "insert into "+ Constants.TABLE_USERS + " (" + Constants.COLUMNS_USERS_SURNAME + "," + Constants.COLUMNS_USERS_NAME + "," + Constants.COLUMNS_USERS_PATRONYMIC + "," + Constants.COLUMNS_USERS_LOGIN +"," + Constants.COLUMNS_USERS_PASSWORD_HASH +")values(?,?,?,?,?)";
-        try {
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, txt_surname.getText());
-            pst.setString(2, txt_name.getText());
-            pst.setString(3, txt_patronymic.getText());
-            pst.setString(4, txt_login.getText());
-            pst.setString(5, txt_password.getText());
-            pst.execute();
-
-            JOptionPane.showMessageDialog(null, "Добавлен");
-            UpdateTable();
-            //   search_user();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-    }
-
 
     @FXML
     void getSelected (MouseEvent event){
@@ -131,23 +141,6 @@ public class EditRegistrationController implements Initializable {
         }
 
     }
-
-    public void Delete(){
-        conn = DBconnection.ConnDB();
-        String sql = "delete from " + Constants.TABLE_USERS + " where " + Constants.COLUMNS_USERS_ID + " = ?";
-        try {
-            pst = conn.prepareStatement(sql);
-            //   pst.setString(1, txt_id.getText());
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "Удален");
-            UpdateTable();
-            //  search_user();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-
-    }
-
 
     public void UpdateTable() {
         Connection conn = DBconnection.ConnDB();

@@ -1,48 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="700.0" style="-fx-background-color: #4b8009;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.quotes.EditRegistrationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.2" prefWidth="991.2" style="-fx-background-color: #91cc07;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.quotes.EditRegistrationController">
     <children>
-        <AnchorPane layoutY="87.0" prefHeight="313.0" prefWidth="700.0" style="-fx-background-color: white;">
-            <children>
-                <AnchorPane layoutY="1.0" prefHeight="290.0" prefWidth="250.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="1.0">
-                    <children>
-                        <Button layoutX="14.0" layoutY="257.0" mnemonicParsing="false" onAction="#Add_users" prefHeight="17.0" prefWidth="75.0" style="-fx-background-color: #4a5a1c;" text="Добавить" textFill="WHITE" />
-                        <Button layoutX="97.0" layoutY="257.0" mnemonicParsing="false" onAction="#Edit" prefHeight="26.0" prefWidth="75.0" style="-fx-background-color: #4a5a1c;" text="Изменить" textFill="WHITE" />
-                        <Button layoutX="180.0" layoutY="257.0" mnemonicParsing="false" onAction="#Delete" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: #4a5a1c;" text="Удалить" textFill="WHITE" />
-                        <TextField fx:id="txt_surname" layoutX="24.0" layoutY="60.0" prefHeight="30.0" prefWidth="180.0" promptText="Фамилия" />
-                        <TextField fx:id="txt_name" layoutX="24.0" layoutY="100.0" prefHeight="30.0" prefWidth="180.0" promptText="Имя" />
-                        <TextField fx:id="txt_patronymic" layoutX="24.0" layoutY="140.0" prefHeight="30.0" prefWidth="180.0" promptText="Отчество" />
-                        <TextField fx:id="txt_login" layoutX="24.0" layoutY="180.0" prefHeight="30.0" prefWidth="180.0" promptText="Логин" />
-                        <TextField fx:id="txt_id" layoutX="24.0" layoutY="20.0" prefHeight="23.0" prefWidth="180.0" promptText="ID" />
-                        <PasswordField fx:id="txt_password" layoutX="24.0" layoutY="220.0" prefHeight="30.0" prefWidth="180.0" promptText="Пароль" />
-                    </children>
-                </AnchorPane>
-            <TableView fx:id="table_users" layoutX="250.0" layoutY="1.0" onMouseClicked="#getSelected" prefHeight="341.0" prefWidth="450.0">
-              <columns>
-                <TableColumn fx:id="col_id" prefWidth="75.0" text="id" />
-                <TableColumn fx:id="col_surname" prefWidth="75.0" text="Фамилия" />
-                  <TableColumn fx:id="col_name" prefWidth="75.0" text="Имя" />
-                  <TableColumn fx:id="col_patronymic" prefWidth="75.0" text="Отчество" />
-                  <TableColumn fx:id="col_login" prefWidth="75.0" text="Логин" />
-                  <TableColumn fx:id="col_password" prefWidth="75.0" text="Пароль" visible="false" />
-              </columns>
-            </TableView>
-
-            </children>
-        </AnchorPane>
-      <Label layoutX="154.0" layoutY="21.0" text="Редактирование профиля" textFill="WHITE">
-         <font>
-            <Font size="33.0" />
-         </font>
-      </Label>
+      <AnchorPane prefHeight="527.0" prefWidth="260.0" style="-fx-background-color: #4b8009;">
+         <children>
+            <ImageView fitHeight="218.0" fitWidth="260.0" layoutX="21.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../java/com/example/quotes/resurses/профиль.png" />
+               </image>
+            </ImageView>
+            <Button disable="true" layoutY="407.0" prefHeight="60.0" prefWidth="260.0" style="-fx-background-color: #4a5a1c;" text="Редактировать данные" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="myQuoteButton" layoutY="347.0" mnemonicParsing="false" onAction="#MyQuote" prefHeight="60.0" prefWidth="260.0" style="-fx-background-color: #4a5a1c;" text="Мои цитаты" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="allQuotesButton" layoutY="287.0" mnemonicParsing="false" onAction="#AllQuotes" prefHeight="60.0" prefWidth="260.0" style="-fx-background-color: #4a5a1c;" text="Все цитаты" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="exitButton" layoutY="467.0" mnemonicParsing="false" onAction="#Exit" prefHeight="60.0" prefWidth="260.0" style="-fx-background-color: #4a5a1c;" text="Выход" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+          <AnchorPane layoutX="260.0" prefHeight="527.0" prefWidth="288.0" style="-fx-background-color: #91cc07;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="0.0">
+              <children>
+                  <TextField fx:id="txt_surname" layoutX="54.0" layoutY="250.0" prefHeight="30.0" prefWidth="180.0" promptText="Фамилия" />
+                  <TextField fx:id="txt_name" layoutX="54.0" layoutY="100.0" prefHeight="30.0" prefWidth="180.0" promptText="Имя" />
+                  <TextField fx:id="txt_patronymic" layoutX="54.0" layoutY="150.0" prefHeight="30.0" prefWidth="180.0" promptText="Отчество" />
+                  <TextField fx:id="txt_login" layoutX="54.0" layoutY="200.0" prefHeight="30.0" prefWidth="180.0" promptText="Логин" />
+                  <TextField fx:id="txt_id" layoutX="54.0" layoutY="50.0" prefHeight="30.0" prefWidth="180.0" promptText="ID" />
+                  <PasswordField fx:id="txt_password" layoutX="54.0" layoutY="300.0" prefHeight="30.0" prefWidth="180.0" promptText="Пароль" />
+                  <Button layoutX="62.0" layoutY="349.0" mnemonicParsing="false" onAction="#Edit" prefHeight="43.0" prefWidth="164.0" style="-fx-background-color: #4a5a1c;" text="Изменить" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+              </children>
+          </AnchorPane>
+      <TableView fx:id="table_users" layoutX="548.0" layoutY="1.0" onMouseClicked="#getSelected" prefHeight="527.0" prefWidth="443.0">
+        <columns>
+          <TableColumn fx:id="col_id" prefWidth="75.0" text="id" />
+          <TableColumn fx:id="col_surname" prefWidth="75.0" text="Фамилия" />
+            <TableColumn fx:id="col_name" prefWidth="75.0" text="Имя" />
+            <TableColumn fx:id="col_patronymic" prefWidth="75.0" text="Отчество" />
+            <TableColumn fx:id="col_login" prefWidth="75.0" text="Логин" />
+            <TableColumn fx:id="col_password" prefWidth="75.0" text="Пароль" visible="false" />
+        </columns>
+      </TableView>
     </children>
 </AnchorPane>

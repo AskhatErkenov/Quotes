@@ -12,6 +12,7 @@ module com.example.quotes {
     requires java.sql;
     requires jdk.scripting.nashorn;
     requires java.desktop;
+    requires jfoenix;
 
     opens com.example.quotes to javafx.fxml;
     exports com.example.quotes;
