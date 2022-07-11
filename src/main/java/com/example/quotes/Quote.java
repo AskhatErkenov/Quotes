@@ -11,6 +11,7 @@ public class Quote {
     private String subject;
     private String date;
     private Integer user;
+    private Integer access;
 
     public Quote(Integer id, String quote, String teacher, String subject, String date, Integer user) {
         this.id = id;
@@ -67,5 +68,13 @@ public class Quote {
 
     public void setUser(Integer user) {
         this.user = user;
+    }
+
+    public Integer getAccess() {
+        return access;
+    }
+
+    public void setAccess(Integer access) {
+        this.access = access;
     }
 }

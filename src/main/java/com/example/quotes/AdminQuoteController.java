@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
 import static com.example.quotes.MainController.user;
 
 
-public class QuoteController implements Initializable {
+public class AdminQuoteController implements Initializable {
 
     @FXML
     private Button btn;
@@ -48,7 +48,7 @@ public class QuoteController implements Initializable {
     @FXML
     private TableColumn<Quote, String> col_subject;
 
-   @FXML
+    @FXML
     private TableColumn<Quote, String> col_date;
 
     @FXML
@@ -76,7 +76,7 @@ public class QuoteController implements Initializable {
     private Button exitButton;
 
     @FXML
-    private Button myQuoteButton;
+    private TextField txt_user;
 
 
 
@@ -87,7 +87,7 @@ public class QuoteController implements Initializable {
 
     @FXML
     void EditData(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("editRegistration.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("adminEditRegistration.fxml"));
         Stage stage = (Stage) editDataButton.getScene().getWindow();
         stage.setScene(new Scene(root));
     }
@@ -99,23 +99,17 @@ public class QuoteController implements Initializable {
         stage.setScene(new Scene(root));
     }
 
-    @FXML
-    void MyQuote(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("profile.fxml"));
-        Stage stage = (Stage) myQuoteButton.getScene().getWindow();
-        stage.setScene(new Scene(root));
-    }
-
 
     public void Add (){
         conn = DBconnection.ConnDB();
-        String sql = "insert into "+ Constants.TABLE_TEACHER_QUOTES + " (" + Constants.COLUMNS_TEACHER_QUOTES_QUOTE + "," + Constants.COLUMNS_TEACHER_QUOTES_TEACHER + "," + Constants.COLUMNS_TEACHER_QUOTES_SUBJECT + "," + Constants.COLUMNS_TEACHER_QUOTES_DATE +"," + Constants.COLUMNS_TEACHER_QUOTES_USER +")values(?,?,?,?,"+user.getId() +")";
+        String sql = "insert into "+ Constants.TABLE_TEACHER_QUOTES + " (" + Constants.COLUMNS_TEACHER_QUOTES_QUOTE + "," + Constants.COLUMNS_TEACHER_QUOTES_TEACHER + "," + Constants.COLUMNS_TEACHER_QUOTES_SUBJECT + "," + Constants.COLUMNS_TEACHER_QUOTES_DATE +"," + Constants.COLUMNS_TEACHER_QUOTES_USER +")values(?,?,?,?,?)";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txt_quote.getText());
             pst.setString(2, txt_teacher.getText());
             pst.setString(3, txt_subject.getText());
             pst.setString(4, txt_date.getText());
+            pst.setString(5, txt_user.getText());
             pst.execute();
             QuoteTable();
         } catch (Exception e) {
@@ -136,6 +130,7 @@ public class QuoteController implements Initializable {
         txt_teacher.setText(col_teacher.getCellData(index).toString());
         txt_subject.setText(col_subject.getCellData(index).toString());
         txt_date.setText(col_date.getCellData(index).toString());
+        txt_user.setText(col_user.getCellData(index).toString());
 
     }
 
@@ -147,8 +142,9 @@ public class QuoteController implements Initializable {
             String value3 = txt_teacher.getText();
             String value4 = txt_subject.getText();
             String value5 = txt_date.getText();
-            String sql = "update "+ Constants.TABLE_TEACHER_QUOTES +" set quote= '"+value2+"',teacher= '"+
-                    value3+"',subject= '"+value4+"',date= '"+value5+"' where id='"+value1+"' and access = " +user.getAccess();
+            String value6 = txt_user.getText();
+            String sql = "update teacher_quotes set quote= '"+value2+"',teacher= '"+
+                    value3+"',subject= '"+value4+"',date= '"+value5+"',id_user ='"+value6 +"' where id='"+value1+"' ";
             pst= conn.prepareStatement(sql);
             pst.execute();
             QuoteTable();
@@ -160,7 +156,7 @@ public class QuoteController implements Initializable {
 
     public void Delete(){
         conn = DBconnection.ConnDB();
-        String sql = "delete from " + Constants.TABLE_TEACHER_QUOTES + " where " + Constants.COLUMNS_TEACHER_QUOTES_ID + " = ? AND access ="+user.getAccess();
+        String sql = "delete from " + Constants.TABLE_TEACHER_QUOTES + " where " + Constants.COLUMNS_TEACHER_QUOTES_ID + " = ? ";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txt_id.getText());
@@ -177,7 +173,7 @@ public class QuoteController implements Initializable {
         Connection conn = DBconnection.ConnDB();
         ObservableList<Quote> list = FXCollections.observableArrayList();
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from teacher_quotes where access <="+user.getAccess());
+            PreparedStatement ps = conn.prepareStatement("select * from " + Constants.TABLE_TEACHER_QUOTES);
             ResultSet rs = ps.executeQuery();
             {
                 while (rs.next()) {

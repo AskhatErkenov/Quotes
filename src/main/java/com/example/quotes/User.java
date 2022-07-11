@@ -7,6 +7,7 @@ public class User {
     private String patronymic;
     private String login;
     private String password;
+    private Integer access;
 
     public User(Integer id, String surname, String name, String patronymic, String login, String password) {
         this.id = id;
@@ -67,5 +68,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getAccess() {
+        return access;
+    }
+
+    public void setAccess(Integer access) {
+        this.access = access;
     }
 }

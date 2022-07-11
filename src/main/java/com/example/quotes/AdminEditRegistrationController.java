@@ -1,7 +1,5 @@
 package com.example.quotes;
 
-
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,9 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static com.example.quotes.MainController.user;
-
-public class EditRegistrationController implements Initializable {
+public class AdminEditRegistrationController implements Initializable {
 
 
     @FXML
@@ -51,6 +47,9 @@ public class EditRegistrationController implements Initializable {
     private TableColumn<User, String> col_password;
 
     @FXML
+    private TableColumn<User, Integer> col_access;
+
+    @FXML
     private TextField txt_id;
 
     @FXML
@@ -69,24 +68,17 @@ public class EditRegistrationController implements Initializable {
     private TextField txt_surname;
 
     @FXML
-    private Button myQuoteButton;
-
-    @FXML
     private Button allQuotesButton;
 
     @FXML
     private Button exitButton;
 
     @FXML
-    void MyQuote(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("profile.fxml"));
-        Stage stage = (Stage) myQuoteButton.getScene().getWindow();
-        stage.setScene(new Scene(root));
-    }
+    private TextField txt_access;
 
     @FXML
     void AllQuotes(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("quote.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("adminQuote.fxml"));
         Stage stage = (Stage) allQuotesButton.getScene().getWindow();
         stage.setScene(new Scene(root));
     }
@@ -117,7 +109,39 @@ public class EditRegistrationController implements Initializable {
         txt_patronymic.setText(col_patronymic.getCellData(index).toString());
         txt_login.setText(col_login.getCellData(index).toString());
         txt_password.setText(col_password.getCellData(index).toString());
+        txt_access.setText(col_access.getCellData(index).toString());
 
+    }
+
+    public void Delete(){
+        conn = DBconnection.ConnDB();
+        String sql = "delete from " + Constants.TABLE_USERS + " where " + Constants.COLUMNS_USERS_ID + " = ? ";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txt_id.getText());
+            pst.execute();
+            UpdateTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    public void Add (){
+        conn = DBconnection.ConnDB();
+        String sql = "insert into "+ Constants.TABLE_USERS + " (" + Constants.COLUMNS_USERS_SURNAME + "," + Constants.COLUMNS_USERS_NAME + "," + Constants.COLUMNS_USERS_PATRONYMIC + "," + Constants.COLUMNS_USERS_LOGIN +"," + Constants.COLUMNS_USERS_PASSWORD_HASH +" ) values(?,?,?,?,?)";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txt_surname.getText());
+            pst.setString(2, txt_name.getText());
+            pst.setString(3, txt_patronymic.getText());
+            pst.setString(4, txt_login.getText());
+            pst.setString(5, txt_password.getText());
+            pst.execute();
+            UpdateTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     public void Edit (){
@@ -129,8 +153,8 @@ public class EditRegistrationController implements Initializable {
             String value4 = txt_patronymic.getText();
             String value5 = txt_login.getText();
             String value6 = txt_password.getText();
-            String sql = "update users set surname= '"+value2+"',name= '"+
-                    value3+"',patronymic= '"+value4+"',login= '"+value5+"',password_hash= '"+value6+"' where id='"+value1+"' ";
+            String sql = "update users set surname= "+value2+",name= "+
+                    value3+",patronymic= "+value4+",login= "+value5+",password_hash= "+value6+"  where id="+value1;
             pst= conn.prepareStatement(sql);
             pst.execute();
             UpdateTable();
@@ -144,16 +168,16 @@ public class EditRegistrationController implements Initializable {
         Connection conn = DBconnection.ConnDB();
         ObservableList<User> list = FXCollections.observableArrayList();
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from " + Constants.TABLE_USERS + " where id = " + user.getId());
+            PreparedStatement ps = conn.prepareStatement("select * from " + Constants.TABLE_USERS);
             ResultSet rs = ps.executeQuery();
             {
                 while (rs.next()) {
-                        list.add(new User(Integer.parseInt(rs.getString(Constants.COLUMNS_USERS_ID)),
-                                rs.getString(Constants.COLUMNS_USERS_SURNAME),
-                                rs.getString(Constants.COLUMNS_USERS_NAME),
-                                rs.getString(Constants.COLUMNS_USERS_PATRONYMIC),
-                                rs.getString(Constants.COLUMNS_USERS_LOGIN),
-                                rs.getString(Constants.COLUMNS_USERS_PASSWORD_HASH)));
+                    list.add(new User(Integer.parseInt(rs.getString(Constants.COLUMNS_USERS_ID)),
+                            rs.getString(Constants.COLUMNS_USERS_SURNAME),
+                            rs.getString(Constants.COLUMNS_USERS_NAME),
+                            rs.getString(Constants.COLUMNS_USERS_PATRONYMIC),
+                            rs.getString(Constants.COLUMNS_USERS_LOGIN),
+                            rs.getString(Constants.COLUMNS_USERS_PASSWORD_HASH)));
                 }
             }
             table_users.setItems(list);
@@ -163,8 +187,9 @@ public class EditRegistrationController implements Initializable {
             col_patronymic.setCellValueFactory(new PropertyValueFactory<User, String>("patronymic"));
             col_login.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
             col_password.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
+            col_access.setCellValueFactory(new PropertyValueFactory<User, Integer>("access"));
 
-    }catch (SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
         }
     }

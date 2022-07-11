@@ -96,12 +96,18 @@ public class MainController {
                 user.setPatronymic(resultSet.getString(4));
                 user.setLogin(resultSet.getString(5));
                 user.setPassword(resultSet.getString(6));
+                user.setAccess(resultSet.getInt(7));
                 count++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (count >= 1) {
+        if (user.getAccess() == 6) {
+            Parent root = FXMLLoader.load(getClass().getResource("adminQuote.fxml"));
+            Stage stage = (Stage) authorization.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        }
+        else{
             Parent root = FXMLLoader.load(getClass().getResource("profile.fxml"));
             Stage stage = (Stage) authorization.getScene().getWindow();
             stage.setScene(new Scene(root));
