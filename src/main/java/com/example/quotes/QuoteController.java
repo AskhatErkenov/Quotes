@@ -2,10 +2,10 @@ package com.example.quotes;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +29,9 @@ import javax.swing.JOptionPane;
 public class QuoteController implements Initializable {
 
     @FXML
+    private Button btn;
+
+    @FXML
     private TableView<Quote> table_quotes;
 
     @FXML
@@ -44,7 +47,7 @@ public class QuoteController implements Initializable {
     private TableColumn<Quote, String> col_subject;
 
    @FXML
-    private TableColumn<Quote, Integer> col_date;
+    private TableColumn<Quote, String> col_date;
 
     @FXML
     private TableColumn<Quote, Integer> col_user;
@@ -67,6 +70,10 @@ public class QuoteController implements Initializable {
     @FXML
     private TextField txt_user;
 
+    @FXML
+    void getDate(ActionEvent event) {
+
+    }
 
     int index = -1;
 
@@ -75,7 +82,7 @@ public class QuoteController implements Initializable {
     PreparedStatement pst = null;
 
 
-    public void Add_users (){
+    public void Add (){
         conn = DBconnection.ConnDB();
         String sql = "insert into "+ Constants.TABLE_TEACHER_QUOTES + " (" + Constants.COLUMNS_TEACHER_QUOTES_QUOTE + "," + Constants.COLUMNS_TEACHER_QUOTES_TEACHER + "," + Constants.COLUMNS_TEACHER_QUOTES_SUBJECT + "," + Constants.COLUMNS_TEACHER_QUOTES_DATE +"," + Constants.COLUMNS_TEACHER_QUOTES_USER +")values(?,?,?,?,?)";
         try {
@@ -121,13 +128,12 @@ public class QuoteController implements Initializable {
             String value4 = txt_subject.getText();
             String value5 = txt_date.getText();
             String value6 = txt_user.getText();
-            String sql = "update teaxher_quotes set quote= '"+value2+"',teacher= '"+
+            String sql = "update teacher_quotes set quote= '"+value2+"',teacher= '"+
                     value3+"',subject= '"+value4+"',date= '"+value5+"',id_user= '"+value6+"' where id='"+value1+"' ";
             pst= conn.prepareStatement(sql);
             pst.execute();
             JOptionPane.showMessageDialog(null, "Изменен");
             QuoteTable();
-            //   search_user();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -143,7 +149,6 @@ public class QuoteController implements Initializable {
             pst.execute();
             JOptionPane.showMessageDialog(null, "Удален");
             QuoteTable();
-            //  search_user();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -163,7 +168,7 @@ public class QuoteController implements Initializable {
                             rs.getString(Constants.COLUMNS_TEACHER_QUOTES_QUOTE),
                             rs.getString(Constants.COLUMNS_TEACHER_QUOTES_TEACHER),
                             rs.getString(Constants.COLUMNS_TEACHER_QUOTES_SUBJECT),
-                            Integer.parseInt(rs.getString(Constants.COLUMNS_TEACHER_QUOTES_DATE)),
+                            rs.getString(Constants.COLUMNS_TEACHER_QUOTES_DATE),
                             Integer.parseInt(rs.getString(Constants.COLUMNS_TEACHER_QUOTES_USER))));
                 }
             }
@@ -172,7 +177,7 @@ public class QuoteController implements Initializable {
             col_quote.setCellValueFactory(new PropertyValueFactory<Quote,String>("quote"));
             col_teacher.setCellValueFactory(new PropertyValueFactory<Quote,String>("teacher"));
             col_subject.setCellValueFactory(new PropertyValueFactory<Quote,String>("subject"));
-            col_date.setCellValueFactory(new PropertyValueFactory<Quote,Integer>("date"));
+            col_date.setCellValueFactory(new PropertyValueFactory<Quote,String>("date"));
             col_user.setCellValueFactory(new PropertyValueFactory<Quote,Integer>("user"));
         } catch (Exception e) {
         }
@@ -181,5 +186,19 @@ public class QuoteController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         QuoteTable();
+        btn.setOnAction(actionEvent -> {
+            btn.getScene().getWindow().hide();
+            FXMLLoader load = new FXMLLoader();
+            load.setLocation(getClass().getResource("/com/example/quotes/editRegistration.fxml"));
+            try {
+                load.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Parent parent = load.getRoot();
+            Stage st = new Stage();
+            st.setScene(new Scene(parent));
+            st.showAndWait();
+        });
     }
 }

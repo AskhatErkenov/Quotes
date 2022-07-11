@@ -1,5 +1,7 @@
 package com.example.quotes;
 
+import javafx.scene.chart.PieChart;
+
 import java.sql.Date;
 
 public class Quote {
@@ -7,10 +9,10 @@ public class Quote {
     private String quote;
     private String teacher;
     private String subject;
-    private Integer date;
+    private String date;
     private Integer user;
 
-    public Quote(Integer id, String quote, String teacher, String subject, Integer date, Integer user) {
+    public Quote(Integer id, String quote, String teacher, String subject, String date, Integer user) {
         this.id = id;
         this.quote = quote;
         this.teacher = teacher;
@@ -51,11 +53,11 @@ public class Quote {
         this.subject = subject;
     }
 
-    public Integer getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Integer date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

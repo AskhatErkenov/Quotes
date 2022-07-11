@@ -40,13 +40,27 @@ public class RegistrationController {
     private Button autorization;
 
     @FXML
-    void initialize() {
+    private Button cancelButton;
+
+    @FXML
+    void initialize() throws IOException {
+
 
         autorization.setOnAction(actionEvent -> {
             DBconnection dbConnect = new DBconnection();
             dbConnect.registrationUsers(registrationSurname.getText(), registrationName.getText(), registrationPatronymic.getText(), registrationLogin.getText(), registrationPassword.getText());
         });
 
+        cancelButton.setOnAction(actionEvent -> {
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getResource("autorization.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        });
     }
 
 }

@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 
 public class DBconnection{
 
-    Connection conn = null;
-
     public static Connection ConnDB() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

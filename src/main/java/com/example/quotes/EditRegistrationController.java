@@ -17,11 +17,12 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static com.example.quotes.MainController.user;
 
-public class EditRegistration implements Initializable {
+public class EditRegistrationController implements Initializable {
 
 
     @FXML
@@ -136,7 +137,7 @@ public class EditRegistration implements Initializable {
         String sql = "delete from " + Constants.TABLE_USERS + " where " + Constants.COLUMNS_USERS_ID + " = ?";
         try {
             pst = conn.prepareStatement(sql);
-         //   pst.setString(1, txt_id.getText());
+            //   pst.setString(1, txt_id.getText());
             pst.execute();
             JOptionPane.showMessageDialog(null, "Удален");
             UpdateTable();
@@ -148,39 +149,33 @@ public class EditRegistration implements Initializable {
     }
 
 
-    public void UpdateTable(){
-        /*Connection conn = DBconnection.ConnDB();
+    public void UpdateTable() {
+        Connection conn = DBconnection.ConnDB();
         ObservableList<User> list = FXCollections.observableArrayList();
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from "+Constants.TABLE_USERS +" where id = "+ user.getId());
+            PreparedStatement ps = conn.prepareStatement("select * from " + Constants.TABLE_USERS + " where id = " + user.getId());
             ResultSet rs = ps.executeQuery();
             {
                 while (rs.next()) {
-                    list.add(new User(Integer.parseInt(rs.getString(Constants.COLUMNS_USERS_ID)),
-                            rs.getString(Constants.COLUMNS_USERS_SURNAME),
-                            rs.getString(Constants.COLUMNS_USERS_NAME),
-                            rs.getString(Constants.COLUMNS_USERS_PATRONYMIC),
-                            rs.getString(Constants.COLUMNS_USERS_LOGIN),
-                            rs.getString(Constants.COLUMNS_USERS_PASSWORD_HASH)));
+                        list.add(new User(Integer.parseInt(rs.getString(Constants.COLUMNS_USERS_ID)),
+                                rs.getString(Constants.COLUMNS_USERS_SURNAME),
+                                rs.getString(Constants.COLUMNS_USERS_NAME),
+                                rs.getString(Constants.COLUMNS_USERS_PATRONYMIC),
+                                rs.getString(Constants.COLUMNS_USERS_LOGIN),
+                                rs.getString(Constants.COLUMNS_USERS_PASSWORD_HASH)));
                 }
             }
             table_users.setItems(list);
-            col_id.setCellValueFactory(new PropertyValueFactory<User,Integer>("id"));
-            col_surname.setCellValueFactory(new PropertyValueFactory<User,String>("surname"));
-            col_name.setCellValueFactory(new PropertyValueFactory<User,String>("name"));
-            col_patronymic.setCellValueFactory(new PropertyValueFactory<User,String>("patronymic"));
-            col_login.setCellValueFactory(new PropertyValueFactory<User,String>("login"));
-            col_password.setCellValueFactory(new PropertyValueFactory<User,String>("password"));*/
+            col_id.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
+            col_surname.setCellValueFactory(new PropertyValueFactory<User, String>("surname"));
+            col_name.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
+            col_patronymic.setCellValueFactory(new PropertyValueFactory<User, String>("patronymic"));
+            col_login.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
+            col_password.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
 
-
-            index = user.getId();
-            txt_id.setText(user.getId().toString());
-            txt_surname.setText(user.getSurname().toString());
-            txt_name.setText(user.getName().toString());
-            txt_patronymic.setText(user.getPatronymic().toString());
-            txt_login.setText(user.getLogin().toString());
-            txt_password.setText(user.getPassword().toString());
-
+    }catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

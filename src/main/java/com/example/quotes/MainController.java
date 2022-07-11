@@ -14,8 +14,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 
 public class MainController {
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
 
     @FXML
     private ResourceBundle resources;
@@ -46,7 +51,7 @@ public class MainController {
             if (!log.equals("") && !pass.equals("")) {
                 try {
                     logUser(log, pass);
-                } catch (SQLException e) {
+                } catch (SQLException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -55,11 +60,15 @@ public class MainController {
         });
 
         registration.setOnAction(actionEvent -> {
-            openNewScene("/com/example/quotes/registration.fxml");
+            try {
+                openNewScene();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
-    private void logUser(String log, String pass) throws SQLException {
+    private void logUser(String log, String pass) throws SQLException, IOException {
         DBconnection dbConn = new DBconnection();
         User user = new User();
         user.setLogin(log);
@@ -82,25 +91,16 @@ public class MainController {
             e.printStackTrace();
         }
         if (count >= 1) {
-
-            openNewScene("/com/example/quotes/quote.fxml");
+            Parent root = FXMLLoader.load(getClass().getResource("quote.fxml"));
+            Stage stage = (Stage) authorization.getScene().getWindow();
+            stage.setScene(new Scene(root));
         }
     }
 
-    public void openNewScene(String window) {
-
-        registration.getScene().getWindow().hide();
-        FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource(window));
-        try {
-            load.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Parent parent = load.getRoot();
-        Stage st = new Stage();
-        st.setScene(new Scene(parent));
-        st.showAndWait();
+    public void openNewScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("registration.fxml"));
+        Stage stage = (Stage) authorization.getScene().getWindow();
+        stage.setScene(new Scene(root));
     }
 
 }
